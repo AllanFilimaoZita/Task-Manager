@@ -9,11 +9,8 @@ function App() {
     console.log("🔥 useEffect executou");
 
     async function loadTasks() {
-      console.log("📡 Buscando tasks...");
 
       const data = await getTasks();
-
-      console.log("📦 Tasks recebidas:", data);
 
       setTasks(data);
     }
