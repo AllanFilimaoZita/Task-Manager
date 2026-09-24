@@ -1,46 +1,43 @@
-
-
 function TaskList({ tasks }) {
   return (
+    <div className="space-y-4">
+      {tasks.map((task) => {
+        return (
+          <div
+            key={task.id}
+            className="rounded-2xl border border-gray-800 bg-gray-900 p-6 shadow-lg"
+          >
 
-    <div className="mt-6 space-y-4">
+            <div className="flex items-start justify-between gap-4">
 
-        { tasks.map((task) => (
+              <div>
+                
+                <h2 className="text-lg font-semibold text-white">
+                  {task.title}
+                </h2>
 
-            <div 
-                key={task.id}
-                className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
-            >
+                <p className="mt-2 text-sm leading-6 text-gray-400">
+                  {task.description}
+                </p>
 
-                <div className="flex items-start justify-between gap-4">
-
-                    <div>
-
-                        <h2 className="text-lg font-semibold text-gray-900">{task.title}</h2>
-
-                        <p className="mt-2 text-sm text-gray-600">{task.description}</p>
-                    </div>
-
-                    <span className="rounded-full bg-yellow-100 px-3 text-sm font-medium text-yellow-700">{task.status}</span>
-
-                </div>
-
-                <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4">
-
-                    <span className="tex-sm text-gray-500">Prioridades: {task.priority}</span>
-
-                    <span className="text-sm text-gray-500">{task.due_date || "Sem Prazo"}</span>
-
-                </div>
-
+              </div>
             </div>
 
-        ))}
+            <div className="mt-5 flex items-center justify-between border-t border-gray-800 pt-4">
+              <span className="text-sm text-gray-400">
+                Prioridade:
+                  {task.priority}
+                </span>
 
+              <span className="text-sm text-gray-400">
+                {task.due_date}
+              </span>
+            </div>
+          </div>
+        );
+      })}
     </div>
-
-  )
-  
+  );
 }
 
-export default TaskList
+export default TaskList;
