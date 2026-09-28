@@ -11,3 +11,17 @@ export async function getTasks() {
 
   return data;
 }
+
+export async function createTask(task) {
+
+  const { data, error } = await supabase
+    .from("tasks")
+    .insert(task)
+
+  if (error) {
+    throw error;
+  }
+
+  return data
+
+}

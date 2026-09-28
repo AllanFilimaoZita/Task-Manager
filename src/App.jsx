@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getTasks } from "./services/taskService";
 import TaskList from "./components/TaskList";
+import TaskForm from "./components/TaskForm";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -60,6 +61,8 @@ function App() {
           ? "📭 Nenhuma tarefa encontrada."
           : <TaskList tasks={tasks} />
         }
+
+        <TaskForm />
         
       </div>
     </main>
