@@ -4,16 +4,31 @@ import TaskList from "./components/TaskList";
 
 function App() {
   const [tasks, setTasks] = useState([]);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
 
     async function loadTasks() {
 
-      const data = await getTasks();
+      try {
+          
+        const data = await getTasks();
 
-      console.log(data);
+        console.log(data);
 
-      setTasks(data);
+        setTasks(data);
+
+      } catch (error) {
+
+        setError(error)
+        console.log(error)
+        
+      } finally {
+
+        setLoading(false);
+
+      }
     }
 
     loadTasks();
@@ -36,7 +51,16 @@ function App() {
           </p>
         </header>
 
-        <TaskList tasks={tasks} />
+        {
+          loading
+          ? "⏳ Carregando tarefas..."
+          : error
+          ? "❌ Não foi possível carregar as tarefas."
+          : tasks.length === 0
+          ? "📭 Nenhuma tarefa encontrada."
+          : <TaskList tasks={tasks} />
+        }
+        
       </div>
     </main>
   );
