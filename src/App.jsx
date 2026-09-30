@@ -35,6 +35,10 @@ function App() {
     loadTasks();
   }, []);
 
+  function handleTaskCreated(novaTask) {
+    setTasks((prevTask) => [...prevTask, novaTask])
+  }
+
   return (
 
     <main className="min-h-screen bg-gray-950 px-4 py-10 text-white">
@@ -62,7 +66,7 @@ function App() {
           : <TaskList tasks={tasks} />
         }
 
-        <TaskForm />
+        <TaskForm onTaskCreated={handleTaskCreated} />
         
       </div>
     </main>

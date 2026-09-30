@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createTask } from "../services/taskService"
 
-function TaskForm() {
+function TaskForm({ onTaskCreated }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("pending");
@@ -25,6 +25,8 @@ function TaskForm() {
         const data = await createTask(task);
 
         console.log("Tarefa criada: ", data);
+
+        onTaskCreated(data)
 
         setTitle("");
         setDescription("");
