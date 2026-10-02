@@ -57,13 +57,7 @@ function App() {
         </header>
 
         {
-          loading
-          ? "⏳ Carregando tarefas..."
-          : error
-          ? "❌ Não foi possível carregar as tarefas."
-          : tasks.length === 0
-          ? "📭 Nenhuma tarefa encontrada."
-          : <TaskList tasks={tasks} />
+          loading ? "⏳ Carregando tarefas..." : error ? "❌ Não foi possível carregar as tarefas." : tasks.length === 0 ? "📭 Nenhuma tarefa encontrada." : <TaskList tasks={tasks} />
         }
 
         <TaskForm onTaskCreated={handleTaskCreated} />

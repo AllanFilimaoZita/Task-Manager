@@ -56,7 +56,6 @@ function TaskForm({ onTaskCreated }) {
         </div>
 
         <div className="space-y-6">
-          {/* Título */}
           <div>
             <label
               htmlFor="title"
@@ -76,7 +75,6 @@ function TaskForm({ onTaskCreated }) {
             />
           </div>
 
-          {/* Descrição */}
           <div>
             <label
               htmlFor="description"
@@ -96,7 +94,6 @@ function TaskForm({ onTaskCreated }) {
             />
           </div>
 
-          {/* Estado e Prioridade */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
               <label
@@ -147,7 +144,6 @@ function TaskForm({ onTaskCreated }) {
             </div>
           </div>
 
-          {/* Data */}
           <div>
             <label
               htmlFor="due_date"
@@ -166,7 +162,6 @@ function TaskForm({ onTaskCreated }) {
             />
           </div>
 
-          {/* Botão */}
           <div className="pt-2">
             <button
               type="submit"
