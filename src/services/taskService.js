@@ -27,3 +27,19 @@ export async function createTask(task) {
   return data
 
 }
+
+export async function updateTasks(taskId, task) {
+  
+  const { data, error } = await supabase
+    .from("tasks")
+    .update(task)
+    .eq("id", taskId)
+    .select()
+    .select();
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+}

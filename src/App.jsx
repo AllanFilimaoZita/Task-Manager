@@ -7,6 +7,7 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
 
@@ -39,6 +40,12 @@ function App() {
     setTasks((prevTask) => [...prevTask, novaTask])
   }
 
+  function handleEdit(task) {
+    setEditingTask(task)
+
+    console.log(task)
+  }
+
   return (
 
     <main className="min-h-screen bg-gray-950 px-4 py-10 text-white">
@@ -57,10 +64,19 @@ function App() {
         </header>
 
         {
-          loading ? "⏳ Carregando tarefas..." : error ? "❌ Não foi possível carregar as tarefas." : tasks.length === 0 ? "📭 Nenhuma tarefa encontrada." : <TaskList tasks={tasks} />
+          loading
+          ? "⏳ Carregando tarefas..."
+          : error
+          ? "❌ Não foi possível carregar as tarefas."
+          : tasks.length === 0
+          ? "📭 Nenhuma tarefa encontrada."
+          : <TaskList tasks={tasks} onEdit={handleEdit} />
         }
 
-        <TaskForm onTaskCreated={handleTaskCreated} />
+        <TaskForm
+          onTaskCreated={handleTaskCreated}
+          editingTask={editingTask}
+        />
         
       </div>
     </main>

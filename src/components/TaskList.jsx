@@ -1,4 +1,4 @@
-function TaskList({ tasks }) {
+function TaskList({ tasks, onEdit }) {
   return (
     <div className="space-y-4">
       {tasks.map((task) => {
@@ -33,6 +33,14 @@ function TaskList({ tasks }) {
                 {task.due_date}
               </span>
             </div>
+
+            <button
+              type="button"
+              onClick={() => onEdit(task)}
+              className="rounded-lg bg-white/10 px-3 py-2 text-sm font-medium text-white transition hover:bg-white/20"
+            >
+              Editar
+            </button>
           </div>
         );
       })}
