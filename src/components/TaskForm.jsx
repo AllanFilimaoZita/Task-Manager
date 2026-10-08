@@ -1,33 +1,53 @@
 import { useEffect, useState } from "react";
 import { createTask, updateTasks } from "../services/taskService";
 
-function TaskForm({ onTaskCreated, editingTask }) {
+function TaskForm({ onTaskCreated, onTaskUpdated, editingTask }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("pending");
   const [priority, setPriority] = useState("medium");
   const [date, setDate] = useState("");
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
+
     if (editingTask) {
-      setTitle(editingTask.title);
-      setDescription(editingTask.description);
-      setStatus(editingTask.status);
-      setPriority(editingTask.priority);
-      setDate(editingTask.due_date);
+      setTitle(editingTask.title ?? "");
+      setDescription(editingTask.description ?? "");
+      setStatus(editingTask.status ?? "pending");
+      setPriority(editingTask.priority ?? "medium");
+      setDate(editingTask.due_date ?? "");
+      setFormError("");
+    } else {
+      setTitle("");
+      setDescription("");
+      setStatus("pending");
+      setPriority("medium");
+      setDate("");
+      setFormError("");
     }
+
   }, [editingTask]);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
+    setFormError("");
+
+    if (title.trim() === "") {
+      setFormError("O título é obrigatório.");
+      return;
+    }
+
     const task = {
-      title: title,
+      title: title.trim(),
       description: description,
       status: status,
       priority: priority,
       due_date: date || null,
     };
+
+    console.log("TASK ANTES DO UPDATE:", task);
 
     if (editingTask) {
       try {
@@ -35,9 +55,10 @@ function TaskForm({ onTaskCreated, editingTask }) {
 
         console.log("Tarefa atualizada: ", data);
 
-        onTaskCreated(data);
+        onTaskUpdated(data);
       } catch (error) {
         console.error("Erro ao atualizar tarefa:", error);
+        setFormError("Não foi possível atualizar a tarefa.");
       }
     } else {
       try {
@@ -46,14 +67,9 @@ function TaskForm({ onTaskCreated, editingTask }) {
         console.log("Tarefa criada: ", data);
 
         onTaskCreated(data);
-
-        setTitle("");
-        setDescription("");
-        setStatus("pending");
-        setPriority("medium");
-        setDate("");
       } catch (error) {
         console.error("Erro ao criar tarefa:", error);
+        setFormError("Não foi possível criar a tarefa.");
       }
     }
   }
@@ -66,13 +82,24 @@ function TaskForm({ onTaskCreated, editingTask }) {
       >
         <div className="mb-8 border-b border-white/10 pb-8">
           <h2 className="text-3xl font-semibold tracking-tighter text-balance text-white">
-            Criar nova tarefa
+            {editingTask ? "Editar tarefa" : "Criar nova tarefa"}
           </h2>
 
           <p className="mt-2 text-base/7 text-gray-400">
-            Preencha os campos abaixo para adicionar uma nova tarefa.
+            {editingTask
+              ? "Altere os dados da tarefa e guarde as alterações."
+              : "Preencha os campos abaixo para adicionar uma nova tarefa."}
           </p>
         </div>
+
+        {formError && (
+          <div
+            role="alert"
+            className="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400"
+          >
+            {formError}
+          </div>
+        )}
 
         <div className="space-y-6">
           <div>
@@ -188,7 +215,7 @@ function TaskForm({ onTaskCreated, editingTask }) {
               type="submit"
               className="w-full rounded-full bg-sky-500 px-4 py-2 text-sm/6 font-semibold text-white transition hover:bg-sky-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400"
             >
-              Criar tarefa
+              {editingTask ? "Atualizar tarefa" : "Criar tarefa"}
             </button>
           </div>
         </div>

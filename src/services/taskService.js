@@ -29,17 +29,16 @@ export async function createTask(task) {
 }
 
 export async function updateTasks(taskId, task) {
-  
   const { data, error } = await supabase
     .from("tasks")
     .update(task)
     .eq("id", taskId)
     .select()
-    .select();
+    .single();
 
-    if (error) {
-      throw error;
-    }
+  if (error) {
+    throw error;
+  }
 
-    return data;
+  return data;
 }

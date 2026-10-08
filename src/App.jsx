@@ -10,26 +10,18 @@ function App() {
   const [editingTask, setEditingTask] = useState(null);
 
   useEffect(() => {
-
     async function loadTasks() {
-
       try {
-          
         const data = await getTasks();
 
         console.log(data);
 
         setTasks(data);
-
       } catch (error) {
-
-        setError(error)
-        console.log(error)
-        
+        setError(error);
+        console.log(error);
       } finally {
-
         setLoading(false);
-
       }
     }
 
@@ -37,47 +29,63 @@ function App() {
   }, []);
 
   function handleTaskCreated(novaTask) {
-    setTasks((prevTask) => [...prevTask, novaTask])
+    setTasks((prevTasks) => [...prevTasks, novaTask]);
   }
 
   function handleEdit(task) {
-    setEditingTask(task)
+    setEditingTask(task);
 
-    console.log(task)
+    console.log(task);
   }
 
+  function handleTaskUpdated(updatedTask) {
+    console.log("RECEBI NO APP:", updatedTask);
+
+    setTasks((prevTasks) => {
+      const newTasks = prevTasks.map((task) => {
+        if (task.id === updatedTask.id) {
+          return updatedTask;
+        }
+
+        return task;
+      });
+
+      console.log(
+        "TAREFA ATUALIZADA NA LISTA:",
+        newTasks.find((task) => task.id === updatedTask.id),
+      );
+
+      return newTasks;
+    });
+
+    setEditingTask(null);
+  }
   return (
-
     <main className="min-h-screen bg-gray-950 px-4 py-10 text-white">
-
       <div className="mx-auto max-w-3xl">
-
         <header className="mb-8">
-
-          <h1 className="text-3xl font-bold tracking-tight">
-            Task Manager
-          </h1>
+          <h1 className="text-3xl font-bold tracking-tight">Task Manager</h1>
 
           <p className="mt-2 text-gray-400">
             Organiza e acompanha as tuas tarefas.
           </p>
         </header>
 
-        {
-          loading
-          ? "⏳ Carregando tarefas..."
-          : error
-          ? "❌ Não foi possível carregar as tarefas."
-          : tasks.length === 0
-          ? "📭 Nenhuma tarefa encontrada."
-          : <TaskList tasks={tasks} onEdit={handleEdit} />
-        }
+        {loading ? (
+          "⏳ Carregando tarefas..."
+        ) : error ? (
+          "❌ Não foi possível carregar as tarefas."
+        ) : tasks.length === 0 ? (
+          "📭 Nenhuma tarefa encontrada."
+        ) : (
+          <TaskList tasks={tasks} onEdit={handleEdit} />
+        )}
 
         <TaskForm
           onTaskCreated={handleTaskCreated}
+          onTaskUpdated={handleTaskUpdated}
           editingTask={editingTask}
         />
-        
       </div>
     </main>
   );
