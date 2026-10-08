@@ -1,4 +1,4 @@
-function TaskList({ tasks, onEdit }) {
+function TaskList({ tasks, onEdit, onDelete }) {
   return (
     <div className="space-y-4">
       {tasks.map((task) => {
@@ -34,13 +34,23 @@ function TaskList({ tasks, onEdit }) {
               </span>
             </div>
 
-            <button
-              type="button"
-              onClick={() => onEdit(task)}
-              className="rounded-lg bg-white/10 px-3 py-2 text-sm font-medium text-white transition hover:bg-white/20"
-            >
-              Editar
-            </button>
+            <div className="mt-5 flex gap-2">
+              <button
+                type="button"
+                onClick={() => onEdit(task)}
+                className="rounded-lg bg-white/10 px-3 py-2 text-sm font-medium text-white transition hover:bg-white/20"
+              >
+                Editar
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onDelete(task.id)}
+                className="rounded-lg bg-red-500 px-3 py-2 text-sm font-medium text-white transition hover:bg-red-600"
+              >
+                Eliminar
+              </button>
+            </div>
           </div>
         );
       })}

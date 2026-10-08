@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getTasks } from "./services/taskService";
+import { getTasks, deleteTask } from "./services/taskService";
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 
@@ -60,6 +60,19 @@ function App() {
 
     setEditingTask(null);
   }
+
+  async function handleDelete(taskId) {
+
+    try {
+      const data = await deleteTask(taskId);
+
+      console.log("Tarefa eliminada:", data);
+    } catch (error) {
+      console.error("Erro ao eliminar tarefa:", error);
+    }
+
+  }
+
   return (
     <main className="min-h-screen bg-gray-950 px-4 py-10 text-white">
       <div className="mx-auto max-w-3xl">
@@ -78,7 +91,11 @@ function App() {
         ) : tasks.length === 0 ? (
           "📭 Nenhuma tarefa encontrada."
         ) : (
-          <TaskList tasks={tasks} onEdit={handleEdit} />
+          <TaskList 
+            tasks={tasks} 
+            onEdit={handleEdit}
+            onDelete={handleDelete} 
+          />
         )}
 
         <TaskForm
