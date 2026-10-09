@@ -8,6 +8,7 @@ function App() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [editingTask, setEditingTask] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
 
   useEffect(() => {
     async function loadTasks() {
@@ -62,15 +63,18 @@ function App() {
   }
 
   async function handleDelete(taskId) {
+    setDeleteError("");
 
     try {
       const data = await deleteTask(taskId);
 
       console.log("Tarefa eliminada:", data);
+
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
     } catch (error) {
       console.error("Erro ao eliminar tarefa:", error);
+      setDeleteError("Não foi possível eliminar a tarefa. Tenta novamente.");
     }
-
   }
 
   return (
@@ -85,17 +89,22 @@ function App() {
         </header>
 
         {loading ? (
-          "⏳ Carregando tarefas..."
+          "Carregando tarefas..."
         ) : error ? (
-          "❌ Não foi possível carregar as tarefas."
+          "Não foi possível carregar as tarefas."
         ) : tasks.length === 0 ? (
-          "📭 Nenhuma tarefa encontrada."
+          "Nenhuma tarefa encontrada."
         ) : (
-          <TaskList 
-            tasks={tasks} 
-            onEdit={handleEdit}
-            onDelete={handleDelete} 
-          />
+          <TaskList tasks={tasks} onEdit={handleEdit} onDelete={handleDelete} />
+        )}
+
+        {deleteError && (
+          <p
+            role="alert"
+            className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400"
+          >
+            {deleteError}
+          </p>
         )}
 
         <TaskForm
